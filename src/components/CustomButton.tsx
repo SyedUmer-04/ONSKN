@@ -1,4 +1,4 @@
-import { Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { vw } from '../utils/measurements';
 import { colors } from '../utils/theme';
 import CustomText from './CustomText';
@@ -11,14 +11,25 @@ function CustomButton(props) {
     buttonTextStyles,
     imgSrc,
     onPress,
+    loader
   } = props
   return (
     <TouchableOpacity onPress={onPress} style={[styles.button, buttonStyle]} {...props}>
-      {buttonText && (
-        <CustomText textStyles={buttonTextStyles}>{buttonText}</CustomText>
-      )}
 
-      {imgSrc && <Image style={buttonImgStyle} source={imgSrc} />}
+      {loader ?
+
+        <ActivityIndicator size="small" color={colors.darkText} />
+
+        :
+
+        <>
+          {buttonText && (
+            <CustomText textStyles={buttonTextStyles}>{buttonText}</CustomText>
+          )}
+
+          {imgSrc && <Image style={buttonImgStyle} source={imgSrc} />}
+        </>
+      }
     </TouchableOpacity>
   );
 }

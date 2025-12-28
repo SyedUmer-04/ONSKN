@@ -2,10 +2,11 @@ import {
   Image,
   StyleSheet,
   View,
-  ImageBackground,
   TouchableOpacity,
-  ScrollView,
   SafeAreaView,
+  ActivityIndicator,
+  Alert,
+  ToastAndroid,
 } from 'react-native';
 import { Formik } from 'formik';
 import { asset } from '../assets/asset';
@@ -14,14 +15,42 @@ import { colors } from '../utils/theme';
 import CustomText from '../components/CustomText';
 import CustomTextInput from '../components/CustomTextInput';
 import CustomButton from '../components/CustomButton';
-import { useRef } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useRef, useState } from 'react';
 import { Schema } from '../components/schema';
+import { signup } from '../api';
 
-function SignUp() {
+function SignUp(navigation) {
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
-  const navigation = useNavigation();
+  const [loaderVisibility, setLoaderVisibility] = useState(false);
+
+  const signupSubmit = (val) => {
+
+        setLoaderVisibility(true);
+
+        const data = {
+            email: val?.email,
+            first_name: "BLake",
+            last_name: "Doe",
+            password: val?.password,
+            token: 123
+        }
+
+
+        signup(data)
+          // .then(() => {navigation.navgate('Home'), showToast("Sign Up Successful")})
+          .then(() => showToast("Sign Up Successful"))
+          .catch((err) => showToast(err))
+          .finally(() => setLoaderVisibility(false))
+  }
+
+  const showToast = (msg) => {
+    ToastAndroid.showWithGravity(
+      {msg},
+      ToastAndroid.LONG,
+      ToastAndroid.BOTTOM,
+    );
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -59,7 +88,7 @@ function SignUp() {
             confirmPassword: '',
           }}
           validationSchema={Schema.SignUpSchema}
-          onSubmit={() => console.log('submitted')}
+          onSubmit={signupSubmit}
         >
           {({ handleChange, errors, values, handleSubmit }) => (
             <>
@@ -128,12 +157,13 @@ function SignUp() {
                   height: vh * 6.5,
                   marginVertical: vh * 2,
                 }}
-                buttonText={'Login'}
+                buttonText = {'Sign Up'}
                 buttonTextStyles={{
                   color: colors.white,
                   fontWeight: '900',
                   fontSize: vh * 2.5,
                 }}
+                loader={loaderVisibility}
                 onPress={handleSubmit}
               />
             </>

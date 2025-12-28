@@ -6,14 +6,15 @@ import { FC } from "react";
 interface TexTI {
     textStyles?: TextStyle,
     children: React.ReactNode
+    // onPress: React.ReactNode
 }
 
-const  CustomText: FC<TexTI> = ({ children, textStyles})=> {
+const  CustomText: FC<TexTI> = ({ children, textStyles, onPress})=> {
 
 
 
     return (
-        <Text style={[styles.text, textStyles]}>
+        <Text style={[styles.text, textStyles, onPress={onPress}]}>
             {children}
         </Text>
 

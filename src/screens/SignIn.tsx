@@ -15,13 +15,19 @@ import CustomText from '../components/CustomText';
 import CustomTextInput from '../components/CustomTextInput';
 import CustomButton from '../components/CustomButton';
 import { Schema } from '../components/schema';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Text } from 'react-native-gesture-handler';
+import { getToken } from '../utils/notificationService';
+
 
 function SignIn({ navigation }: any) {
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
   const [isChecked, setIsChecked] = useState(false);
+
+  useEffect(() => {
+    getToken()
+  })
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -36,7 +42,9 @@ function SignIn({ navigation }: any) {
       <View style={styles.formContainer}>
         <View style={styles.ToggleView}>
           <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
-            <Text style={[styles.toggleText, styles.textUnderline]}>Sign In</Text>
+            <Text style={[styles.toggleText, styles.textUnderline]}>
+              Sign In
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
@@ -119,12 +127,12 @@ function SignIn({ navigation }: any) {
         </Formik>
         <View style={styles.extraLoginFeaturesConatainer}>
           <View style={styles.checkboxContainer}>
-          <TouchableOpacity
-            style={[styles.checkbox, isChecked && styles.checkedBox]}
-            onPress={() => setIsChecked(!isChecked)}
-          >
-            {isChecked && <Text style={styles.tick}>✓</Text>}
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.checkbox, isChecked && styles.checkedBox]}
+              onPress={() => setIsChecked(!isChecked)}
+            >
+              {isChecked && <Text style={styles.tick}>✓</Text>}
+            </TouchableOpacity>
             <CustomText textStyles={styles.rememberMe}>Remember Me</CustomText>
           </View>
 
@@ -178,16 +186,15 @@ function SignIn({ navigation }: any) {
           }}
         >
           Don't have an account?
-          <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-            <CustomText
-              textStyles={{
-                color: colors.Primary,
-              }}
-            >
-              {' '}
-              Sign Up
-            </CustomText>
-          </TouchableOpacity>
+          <CustomText
+            textStyles={{
+              color: colors.Primary,
+            }}
+            onPress={() => navigation.navigate('SignUp')}
+          >
+            {' '}
+            Sign Up
+          </CustomText>
         </CustomText>
       </View>
       {/* </ScrollView> */}
@@ -255,7 +262,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
 
-  checkboxContainer:{
+  checkboxContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -274,7 +281,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     color: colors.white,
-  },  
+  },
 
   tick: {
     color: colors.white,
@@ -282,7 +289,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 
-  rememberMe:{
+  rememberMe: {
     color: colors.text,
     marginLeft: vw * 2,
     fontSize: vw * 3.5,

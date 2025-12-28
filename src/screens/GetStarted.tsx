@@ -42,7 +42,7 @@ function GetStarted({navigation}: any) {
           </Text>
         </View>
 
-        <TouchableOpacity style={styles.getStartedView} onPress={() => navigation.navigate('Home')}>
+        <TouchableOpacity style={styles.getStartedView} onPress={() => navigation.navigate('SignIn')}>
           <View style={styles.getStartedTextArrow}>
             <Text style={styles.getStartedText}>Get Started</Text>
             <Image
