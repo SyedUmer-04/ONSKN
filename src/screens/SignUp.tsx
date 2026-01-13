@@ -4,9 +4,6 @@ import {
   View,
   TouchableOpacity,
   SafeAreaView,
-  ActivityIndicator,
-  Alert,
-  ToastAndroid,
 } from 'react-native';
 import { Formik } from 'formik';
 import { asset } from '../assets/asset';
@@ -17,39 +14,52 @@ import CustomTextInput from '../components/CustomTextInput';
 import CustomButton from '../components/CustomButton';
 import { useRef, useState } from 'react';
 import { Schema } from '../components/schema';
-import { signup } from '../api';
+import { useSelector, useDispatch } from 'react-redux';
+import { SignUpAction } from '../redux/slicers/authSlice';
+import Toast from 'react-native-toast-message';
 
-function SignUp(navigation) {
+function SignUp({navigation}) {
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
   const [loaderVisibility, setLoaderVisibility] = useState(false);
+  const dispatch = useDispatch();
 
-  const signupSubmit = (val) => {
+  const signupSubmit = val => {
+    setLoaderVisibility(true);
 
-        setLoaderVisibility(true);
+    const data = {
+      email: val?.email,
+      first_name: 'BLake',
+      last_name: 'Doe',
+      password: val?.password,
+      token: 123,
+    };
 
-        const data = {
-            email: val?.email,
-            first_name: "BLake",
-            last_name: "Doe",
-            password: val?.password,
-            token: 123
-        }
+    dispatch(SignUpAction(data))
+      .unwrap()
+      .then(res => {
+        console.log('response from Signup', res);
 
+        showToast({
+          type: 'success',
+          text1: 'SignUp Successfull',
+          text2: 'Login!',
+        });
+      })
+      .catch(err =>{
 
-        signup(data)
-          // .then(() => {navigation.navgate('Home'), showToast("Sign Up Successful")})
-          .then(() => showToast("Sign Up Successful"))
-          .catch((err) => showToast(err))
-          .finally(() => setLoaderVisibility(false))
-  }
+        showToast({ type: 'error', text1: 'Error Signing Up', text2: err })
+      }
+      )
+      .finally(() => setLoaderVisibility(false));
+  };
 
-  const showToast = (msg) => {
-    ToastAndroid.showWithGravity(
-      {msg},
-      ToastAndroid.LONG,
-      ToastAndroid.BOTTOM,
-    );
+  const showToast = props => {
+    Toast.show({
+      type: props?.type,
+      text1: props?.text1,
+      text2: props?.text2,
+    });
   };
 
   return (
@@ -65,27 +75,34 @@ function SignUp(navigation) {
       <View style={styles.formContainer}>
         <View style={styles.ToggleView}>
           <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
-            <CustomText textStyles={styles.toggleText}>
-              Sign In
-            </CustomText>
+            <CustomText textStyles={styles.toggleText}>Sign In</CustomText>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-            <CustomText textStyles={[styles.toggleText, styles.textUnderline]}>Sign Up</CustomText>
+            <CustomText textStyles={[styles.toggleText, styles.textUnderline]}>
+              Sign Up``
+            </CustomText>
           </TouchableOpacity>
         </View>
 
-        <CustomText textStyles={styles.createAccountHeading}>Create Account</CustomText>
+        <CustomText textStyles={styles.createAccountHeading}>
+          Create Account
+        </CustomText>
 
         <CustomText textStyles={styles.tagLine}>
           Welcome! Unlock Your Personalized Experience.
         </CustomText>
 
         <Formik
+          // initialValues={{
+          //   email: '',
+          //   password: '',
+          //   confirmPassword: '',
+          // }}
           initialValues={{
-            email: '',
-            password: '',
-            confirmPassword: '',
+            email: 'jamesanderson21@gmail.com',
+            password: '1234567',
+            confirmPassword: '1234567',
           }}
           validationSchema={Schema.SignUpSchema}
           onSubmit={signupSubmit}
@@ -157,7 +174,7 @@ function SignUp(navigation) {
                   height: vh * 6.5,
                   marginVertical: vh * 2,
                 }}
-                buttonText = {'Sign Up'}
+                buttonText={'Sign Up'}
                 buttonTextStyles={{
                   color: colors.white,
                   fontWeight: '900',
@@ -169,8 +186,7 @@ function SignUp(navigation) {
             </>
           )}
         </Formik>
-        
-        
+
         <CustomText
           textStyles={{
             color: colors.darkText,
@@ -185,7 +201,6 @@ function SignUp(navigation) {
             <CustomText
               textStyles={{
                 color: colors.Primary,
-                
               }}
             >
               {' '}

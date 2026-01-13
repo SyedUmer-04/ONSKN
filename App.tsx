@@ -20,8 +20,10 @@ import GetStarted from './src/screens/GetStarted';
 import Home from './src/screens/Home';
 import { requestUserPermission } from './src/utils/notificationService';
 import { useEffect } from 'react';
-import {PermissionsAndroid} from 'react-native';
-
+import { PermissionsAndroid } from 'react-native';
+import { Provider } from 'react-redux';
+import { store } from './src/redux/store';
+import Toast from 'react-native-toast-message';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -29,33 +31,46 @@ function App() {
   const Stack = createNativeStackNavigator();
 
   useEffect(() => {
-    PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+    PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+    );
     // requestUserPermission()
-  }, [])
+  }, []);
 
   return (
+    <Provider store={store}>
+      <NavigationContainer>
+        <View style={styles.container}>
+          <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
-    <NavigationContainer>
-      <View style={styles.container}>
-        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-
-        <Stack.Navigator
-          initialRouteName={'Start'}
-          screenOptions={{ headerShown: false }}
-        >
-          <Stack.Screen name="Start" component={Start} />
-          <Stack.Screen name="GetStarted" component={GetStarted} />
-          <Stack.Screen name="SignIn" component={SignIn} />
-          <Stack.Screen name="SignUp" component={SignUp} />
-          <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="ForgotPasswordStep1" component={ForgotPasswordStep1} />
-          <Stack.Screen name="ForgotPasswordStep2" component={ForgotPasswordStep2} />
-          <Stack.Screen name="ForgotPasswordStep3" component={ForgotPasswordStep3} />
-          <Stack.Screen name="Verification" component={Verification} />
-          <Stack.Screen name="NewPassword" component={NewPassword} />
-        </Stack.Navigator>
-      </View>
-    </NavigationContainer>
+          <Stack.Navigator
+            initialRouteName={'Start'}
+            screenOptions={{ headerShown: false }}
+          >
+            <Stack.Screen name="Start" component={Start} />
+            <Stack.Screen name="GetStarted" component={GetStarted} />
+            <Stack.Screen name="SignIn" component={SignIn} />
+            <Stack.Screen name="SignUp" component={SignUp} />
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen
+              name="ForgotPasswordStep1"
+              component={ForgotPasswordStep1}
+            />
+            <Stack.Screen
+              name="ForgotPasswordStep2"
+              component={ForgotPasswordStep2}
+            />
+            <Stack.Screen
+              name="ForgotPasswordStep3"
+              component={ForgotPasswordStep3}
+            />
+            <Stack.Screen name="Verification" component={Verification} />
+            <Stack.Screen name="NewPassword" component={NewPassword} />
+          </Stack.Navigator>
+          <Toast  position='top' />
+        </View>
+      </NavigationContainer>
+    </Provider>
   );
 }
 

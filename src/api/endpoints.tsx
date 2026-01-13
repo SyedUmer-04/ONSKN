@@ -1,7 +1,7 @@
 export const endpoints = {
   auth: {
-    signup: '/wc/v3/customers',
-    login: 'api/jwt-auth/v1/token',
+    signup: 'auth/register',
+    login: 'auth/login',
     about: 'wp/v2/pages?slug=about',
     userProfile: 'wp/v2/users/me',
 

@@ -18,16 +18,48 @@ import { Schema } from '../components/schema';
 import { useEffect, useRef, useState } from 'react';
 import { Text } from 'react-native-gesture-handler';
 import { getToken } from '../utils/notificationService';
+import { LoginAction, setRememberMe } from '../redux/slicers/authSlice';
+import { useDispatch } from 'react-redux';
+import Toast from 'react-native-toast-message';
 
 
 function SignIn({ navigation }: any) {
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
   const [isChecked, setIsChecked] = useState(false);
+  const dispatch = useDispatch();
+  const [loginLoader, setLoginLoaderVisibility] = useState(false)
 
   useEffect(() => {
-    getToken()
+    const deviceToken = getToken()
   })
+
+  const loginSubmit = async val => {
+    setLoginLoaderVisibility(true)
+    
+    dispatch(LoginAction(val))
+      .unwrap()
+      .then(() => showToast({type:'success', text1: 'Congrats!!', text2: 'Login Successful'}))
+      .catch(err => {
+        showToast({type:'error', text1: "Error Signing In", text2: err})
+        console.log("error from dispatch ====> ", err);
+        
+      })
+      .finally(() => setLoginLoaderVisibility(false))
+
+      isChecked &&  
+      dispatch(setRememberMe({...val, token: getToken()})) 
+  }
+
+
+
+  const showToast = props => {
+      Toast.show({
+        type: props?.type,
+        text1: props?.text1,
+        text2: props?.text2,
+      });
+    };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -60,11 +92,13 @@ function SignIn({ navigation }: any) {
 
         <Formik
           initialValues={{
-            email: '',
-            password: '',
+            // email: '',
+            // password: '',
+            email: 'jamesanderson21@gmail.com',
+            password: '1234567',
           }}
           validationSchema={Schema.LoginSchema}
-          onSubmit={() => console.log('submitted')}
+          onSubmit={loginSubmit}
         >
           {({ handleChange, errors, values, handleSubmit }) => (
             <>

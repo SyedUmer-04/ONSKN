@@ -1,12 +1,3 @@
-import { configureStore } from '@reduxjs/toolkit'
-import { authSLice } from './slicers/userslice'
-
-export const store = configureStore({
-    reducer: {
-        authSLice,
-    }
-})
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
@@ -19,13 +10,13 @@ import {
   persistReducer,
   persistStore,
 } from 'redux-persist';
-import userSlice from './userSlice';
+import authSlice from './slicers/authSlice';
 const persistedConfig = {
-  key: 'embrace-user-root',
+  key: 'onskn-user-root',
   storage: AsyncStorage,
   blacklist: ['commonReducer'],
 };
-const reducers = combineReducers({ user: userSlice });
+const reducers = combineReducers({ auth: authSlice });
 const persistedStore = persistReducer(persistedConfig, reducers);
 
 const store = configureStore({

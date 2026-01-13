@@ -2,71 +2,38 @@ import axios from 'axios';
 import { store } from '../redux/store';
 import endpoints from './endpoints';
 
-// export const urls = {
-//   v1: `https://onlinetesting102.com/onskn/wp-json/wc/v3/`,
-//   customUrl: 'https://onlinetesting102.com/onskn/wp-json/api/',
-//   bannerUrl: 'https://onlinetesting102.com/onskn/wp-json/api/',
-//   v2: 'https://onlinetesting102.com/onskn/wp-json/',
-// };
-export const urls = {
-//   v1: `https://onskn.app/wp-json/wc/v3/`,
-  v1: `https://onskn.app/wp-json`,
-//   customUrl: 'https://onskn.app/wp-json/api/',
-//   bannerUrl: 'https://onskn.app/wp-json/api/',
-//   v2: 'https://onskn.app/wp-json/',
-};
+export const base_url = 'https://192.168.100.234:5000/api/';
 
-
-// onskn.app
-export const consumer_key = 'ck_f1fda90e24e3f1ee2b315dde7037a7e4d8d64f2d';
-export const consumer_secret = 'cs_f2ff11fefb5b620877c544c17e7c63ed8b4ce5e6';
-
-// https://armarioperfecto.uk//wp-json/wc/v3/orders/?consumer_key=ck_e4f41079f801ca7b905b763829c38695aedf59b8&consumer_secret=cs_d7c276c98fc0c58f33966d2a1b131b2213b9ab04
-
-export const base_url = urls.v1;
-// export const custom_url = urls.customUrl;
-// export const banner_url = urls.bannerUrl;
-// export const v2 = urls.v2;
-
-// import { EventRegister } from 'react-native-event-listeners';?
-// const URL = 'https://sr-residence.projectstagingzone.com/dev'; //dev
-// export const IMAGE_URL = 'https://embrace.projectstagingzone.com/dev/';
-// export const SOCKET_URL = 'http://sr-residence.projectstagingzone.com:9001'; //socket dev
-// export const URL = 'https://embrace.projectstagingzone.com/dev';
-// const URL = 'http://200.1.0.231:13001'
-
-// export const BASE_URL = `${URL}/`; // prodimport { EventRegister } from 'react-native-event-listeners'
-
-// const BASE_URL = 'http://200.1.2.174:1201/apis/';
-// const BASE_URL = 'http://localhost:5001/apis/'
+import { EventRegister } from 'react-native-event-listeners';
 
 const instance = axios.create({
   baseURL: base_url,
   headers: { 'Content-Type': 'application/json' },
 });
-// Request interceptor for error handling
-// instance.interceptors.request.use(
-//   config => {
-//     // You can add request headers or do other modifications here
-//     const state = store.getState();
-//     if (state.user.token) {
-//       config.headers.Authorization = `Bearer ${state.user.token}`;
-//     }
-//     return config;
-//   },
-//   error => {
-//     // Handle request error (e.g., network issues)
-//     console.log(error.response.data);
 
-//     return Promise.reject(error);
-//   },
-// );
+// Request interceptor for error handling
+instance.interceptors.request.use(
+  config => {
+    // You can add request headers or do other modifications here
+    const state = store.getState();
+    if (state.auth.token) {
+      config.headers.Authorization = `Bearer ${state.auth.token}`;
+    }
+    return config;
+  },
+  error => {
+    // Handle request error (e.g., network issues)
+    console.log(error.response.data);
+
+    return Promise.reject(error);
+  },
+);
 
 // Response interceptor for error handling and response transformation
 instance.interceptors.response.use(
   response => {
     // Check for successful response status codes (e.g., 2xx)
-    if (response.status >= 200 && response.status < 300) {
+    if (response.data.status >= 200 && response.data.status < 300) {
       // You can perform response transformations here
       // For example, you can extract the data you need
       return response.data;
@@ -80,9 +47,12 @@ instance.interceptors.response.use(
   error => {
     // Handle response error (e.g., 4xx, 5xx)
     if (error.response) {
+      console.log("Error ===========>",error.response);
+      
       // You can access the response status code, data, headers, etc.
       const { status, data } = error.response;
-      console.log(data);
+      // console.log("inside respons ===>",data);
+      // console.log("status ===>", status);
 
       // Handle specific error codes as needed
       if (status === 401) {
@@ -92,6 +62,8 @@ instance.interceptors.response.use(
       } else if (status === 403) {
         EventRegister.emit('logout');
       } else {
+        return Promise.reject(JSON.stringify(data));
+
         // Handle other error codes
         // You can log the error or display a user-friendly message
       }
@@ -111,6 +83,8 @@ instance.interceptors.response.use(
 );
 
 export const login = data => {
+  console.log("Data --->",data);
+  
   return instance.post(endpoints.auth.login, data);
 };
 
@@ -120,10 +94,7 @@ export const switchRole = () => {
 
 export const signup = data => {
 
-  return instance.post(endpoints.auth.signup, data, {params: {
-    consumer_key, 
-    consumer_secret,
-  }});
+  return instance.post(endpoints.auth.signup, data);
 };
 
 export const forgotPassword = data => {
