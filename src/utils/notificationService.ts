@@ -13,8 +13,5 @@ export async function requestUserPermission() {
 
 export async function getToken() {
     const token = await messaging().getToken()
-
-    console.log("Token ====> ", token)
-
 }
 

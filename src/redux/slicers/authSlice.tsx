@@ -19,7 +19,7 @@ export const SignUpAction = createAsyncThunk(
       return response;
     } catch (err) {
       console.log('Inside err SignupActiopn ===>>,', err);
-      return rejectWithValue(err.response ? err.response.data : err.message);
+      return rejectWithValue(err.response ? err.response.data : err);
     }
   },
 );
@@ -30,12 +30,21 @@ export const LoginAction = createAsyncThunk('Login', async data => {
 
 const authSlice = createSlice({
   name: 'authSlice',
-  initialState,
+  initialState : {
+    credentials: {
+    email : '',
+    password: '',
+    token: '',
+  },
+  user: null,
+  token: null,
+
+},
   reducers: {
     setRememberMe: (state, action) => {
-      state.email = action.payload.email;
-      state.password = action.payload.password;
-      state.token = action.payload.token;
+      state.credentials.email = action.payload.email;
+      state.credentials.password = action.payload.password;
+      state.credentials.token = action.payload.token;
       console.log('remember me data ===> ', action.payload );
       
     },
@@ -44,6 +53,8 @@ const authSlice = createSlice({
     builder
       .addCase(LoginAction.fulfilled, (state, action) => {
         console.log("login Extra Reducer res ====> ", action.payload);
+        state.user = action?.payload?.user
+        state.token = action?.payload?.token
         
       })
 
@@ -52,3 +63,4 @@ const authSlice = createSlice({
 
 export const { setRememberMe } = authSlice.actions;
 export default authSlice.reducer;
+

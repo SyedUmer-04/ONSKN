@@ -28,9 +28,8 @@ function SignUp({navigation}) {
     setLoaderVisibility(true);
 
     const data = {
+      name: 'simeone',
       email: val?.email,
-      first_name: 'BLake',
-      last_name: 'Doe',
       password: val?.password,
       token: 123,
     };
@@ -38,21 +37,22 @@ function SignUp({navigation}) {
     dispatch(SignUpAction(data))
       .unwrap()
       .then(res => {
-        console.log('response from Signup', res);
+        console.log('response from Signup Component dispatch done!', res);
 
         showToast({
           type: 'success',
           text1: 'SignUp Successfull',
           text2: 'Login!',
         });
+
+        navigation.navigate('SignIn')
       })
       .catch(err =>{
-
-        showToast({ type: 'error', text1: 'Error Signing Up', text2: err })
+          showToast({ type: 'error', text1: 'Error Signing Up', text2: err?.message})
       }
       )
       .finally(() => setLoaderVisibility(false));
-  };
+  };1
 
   const showToast = props => {
     Toast.show({
@@ -94,15 +94,10 @@ function SignUp({navigation}) {
         </CustomText>
 
         <Formik
-          // initialValues={{
-          //   email: '',
-          //   password: '',
-          //   confirmPassword: '',
-          // }}
           initialValues={{
-            email: 'jamesanderson21@gmail.com',
-            password: '1234567',
-            confirmPassword: '1234567',
+            email: '',
+            password: '',
+            confirmPassword: '',
           }}
           validationSchema={Schema.SignUpSchema}
           onSubmit={signupSubmit}

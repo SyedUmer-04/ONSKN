@@ -2,7 +2,7 @@ import axios from 'axios';
 import { store } from '../redux/store';
 import endpoints from './endpoints';
 
-export const base_url = 'https://192.168.100.234:5000/api/';
+export const base_url = 'http://192.168.100.234:5000/api/';
 
 import { EventRegister } from 'react-native-event-listeners';
 
@@ -33,7 +33,8 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   response => {
     // Check for successful response status codes (e.g., 2xx)
-    if (response.data.status >= 200 && response.data.status < 300) {
+    
+    if (response.status >= 200 && response.status < 300) {
       // You can perform response transformations here
       // For example, you can extract the data you need
       return response.data;
@@ -62,7 +63,7 @@ instance.interceptors.response.use(
       } else if (status === 403) {
         EventRegister.emit('logout');
       } else {
-        return Promise.reject(JSON.stringify(data));
+        return Promise.reject(data);
 
         // Handle other error codes
         // You can log the error or display a user-friendly message
@@ -83,8 +84,6 @@ instance.interceptors.response.use(
 );
 
 export const login = data => {
-  console.log("Data --->",data);
-  
   return instance.post(endpoints.auth.login, data);
 };
 
@@ -93,11 +92,11 @@ export const switchRole = () => {
 };
 
 export const signup = data => {
-
   return instance.post(endpoints.auth.signup, data);
 };
 
 export const forgotPassword = data => {
+  
   return instance.post(endpoints.auth.forgotPassword, data);
 };
 

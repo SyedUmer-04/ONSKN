@@ -2,14 +2,25 @@ import { Image, StyleSheet, View } from 'react-native';
 import { colors } from '../utils/theme';
 import { asset } from '../assets/asset';
 import { vh, vw } from '../utils/measurements';
-import React, { useEffect } from 'react';
+import React, { use, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 function Start({navigation}: any) {
+    const token = useSelector(state => state.auth.token);
+    const user = useSelector(state => state.auth.user);
+    
+    console.log('user saved ===> ', user);
+    console.log('logic ===> ', user != null && token != null);
 
   useEffect(() => {
+
     const timer = setTimeout(() => {
-      navigation.navigate('GetStarted'); // or 'navigate'  to GetStarted
-    }, 2000); // 2 seconds
+      if (token) {
+        navigation.replace('Home'); 
+      } else {
+        navigation.replace('Login');
+      }
+    }, 3000); 
 
     return () => clearTimeout(timer); // Cleanup
   }, []);
