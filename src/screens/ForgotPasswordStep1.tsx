@@ -7,8 +7,51 @@ import CustomText from '../components/CustomText';
 import CustomTextInput from '../components/CustomTextInput';
 import CustomButton from '../components/CustomButton';
 import { Schema } from '../components/schema';
+import { useDispatch } from 'react-redux';
+import { ForgotPasswordAction } from '../redux/slicers/authSlice';
+import Toast from 'react-native-toast-message';
+import { showToast } from '../utils/toast';
+import { useState } from 'react';
 
 function ForgotPasswordStep1({navigation} : any) {
+  const dispatch = useDispatch()
+  const [loader, setLoaderVisibility] = useState(false)
+
+  const onSubmitEmailInForgotPassword = (data) => {
+    setLoaderVisibility(true)
+
+    dispatch(ForgotPasswordAction(data))
+    .unwrap()
+    .then((res) => {
+      console.log('Forgot Pass successs ==> ', res);
+      
+
+      showToast({
+          type: 'success',
+          text1: 'Email Sent!'
+        })
+    })
+    .catch((err) => {
+      console.log('Forgot Pass fail ==> ', err);
+
+
+      showToast({
+        type: 'error',
+        text1: 'Error',
+        text2: err?.message,
+      })
+    })
+    .finally(() => {
+      navigation.navigate('ForgotPasswordStep2')
+      setLoaderVisibility(false)
+    })
+
+    
+  }
+
+
+
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Image style={styles.bgImage} source={asset.LoginBg} />
@@ -32,11 +75,9 @@ function ForgotPasswordStep1({navigation} : any) {
         <Formik
           initialValues={{
             email: '',
-            password: '',
-            confirmPassword: '',
           }}
           validationSchema={Schema.forgotPasswordStep1Schema}
-          onSubmit={() => navigation.navigate('ForgotPasswordStep2')}
+          onSubmit={(data) => onSubmitEmailInForgotPassword(data)}
         >
           {({ handleChange, errors, values, handleSubmit }) => (
             <>
@@ -71,6 +112,7 @@ function ForgotPasswordStep1({navigation} : any) {
                   fontWeight: '900',
                   fontSize: vh * 2.5,
                 }}
+                loader = {loader}
                 onPress={handleSubmit}
               />
             </>

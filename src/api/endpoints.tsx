@@ -5,12 +5,13 @@ export const endpoints = {
     about: 'wp/v2/pages?slug=about',
     userProfile: 'wp/v2/users/me',
 
-    forgotPasswordMail: 'bdpwr/v1/reset-password',
+    forgotPasswordMail: 'auth/forgot',
+    verifyOTP: '/verify-otp',
     resetPassword: 'bdpwr/v1/set-password',
     verifyPassword: 'bdpwr/v1/validate-code',
     termsConditions: 'wp/v2/pages?slug=terms',
     privacyPolicy: 'wp/v2/pages?slug=privacy',
-    registration: 'registration',
+    registration: 'registration',  
   },
 
   products: {

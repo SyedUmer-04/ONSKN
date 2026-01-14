@@ -39,16 +39,22 @@ function SignIn({ navigation }: any) {
     
     dispatch(LoginAction(val))
       .unwrap()
-      .then(() => showToast({type:'success', text1: 'Congrats!!', text2: 'Login Successful'}))
-      .catch(err => {
-        showToast({type:'error', text1: "Error Signing In", text2: err})
-        console.log("error from dispatch ====> ", err);
+      .then(() => {
+        showToast({type:'success', text1: 'Congrats!!', text2: 'Login Successful'})
+
+        {isChecked &&  dispatch(setRememberMe({...val, token: getToken()})) }
         
+        navigation.navigate('Home')
+      })
+      .catch(err => {
+        showToast({type:'error', text1: "Error Signing In", text2: err?.message})
+        console.log("error from dispatch ====> ", err?.message);
       })
       .finally(() => setLoginLoaderVisibility(false))
 
-      isChecked &&  
-      dispatch(setRememberMe({...val, token: getToken()})) 
+      
+
+      
   }
 
 
@@ -92,10 +98,8 @@ function SignIn({ navigation }: any) {
 
         <Formik
           initialValues={{
-            // email: '',
-            // password: '',
-            email: 'jamesanderson21@gmail.com',
-            password: '1234567',
+            email: '',
+            password: '',
           }}
           validationSchema={Schema.LoginSchema}
           onSubmit={loginSubmit}
@@ -154,6 +158,7 @@ function SignIn({ navigation }: any) {
                   fontWeight: '900',
                   fontSize: vh * 2.5,
                 }}
+                loader = {loginLoader}
                 onPress={handleSubmit}
               />
             </>

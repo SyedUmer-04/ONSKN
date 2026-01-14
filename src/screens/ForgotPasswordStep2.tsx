@@ -7,8 +7,43 @@ import CustomText from '../components/CustomText';
 import CustomTextInput from '../components/CustomTextInput';
 import CustomButton from '../components/CustomButton';
 import { Schema } from '../components/schema';
+import { useState } from 'react';
+import { showToast } from '../utils/toast';
+import { useDispatch } from 'react-redux';
+import { VerifyOtpAction } from '../redux/slicers/authSlice';
 
 function ForgotPasswordStep2({navigation} : any) {
+  const [loader, setLoaderVisibility] = useState(false)
+  const dispatch = useDispatch()
+
+  const onSubmitOTP = (data) => {
+      setLoaderVisibility(true)
+  
+      dispatch(VerifyOtpAction(data))
+      .unwrap()
+      .then((res) => {
+        console.log('OTP check successs ==> ', res);
+        
+        showToast({
+            type: 'success',
+            text1: 'Verified!'
+          })
+      })
+      .catch((err) => {
+        console.log('OTP check fail ==> ', err);
+  
+        showToast({
+          type: 'error',
+          text1: 'Invalid OTP',
+          text2: err?.message,
+        })
+      })
+      .finally(() => {
+        navigation.navigate('ForgotPasswordStep3')
+        setLoaderVisibility(false)
+      })
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Image style={styles.bgImage} source={asset.LoginBg} />
@@ -34,7 +69,7 @@ function ForgotPasswordStep2({navigation} : any) {
             code: '',
           }}
           validationSchema={Schema.forgotPasswordStep2Schema}
-          onSubmit={() => {}}
+          onSubmit={(data) => {onSubmitOTP(data)}}
         >
           {({ handleChange, errors, values, handleSubmit }) => (
             <>
@@ -45,7 +80,7 @@ function ForgotPasswordStep2({navigation} : any) {
                 key={'code'}
                 isrequired={true}
                 error={errors.code}
-                onChangeText={handleChange('email')}
+                onChangeText={handleChange('code')}
                 value={values.code}
               />
               ({errors.code} &&
@@ -68,6 +103,7 @@ function ForgotPasswordStep2({navigation} : any) {
                   fontWeight: '900',
                   fontSize: vh * 2.5,
                 }}
+                loader = {loader}
                 onPress={handleSubmit}
               />
             </>
