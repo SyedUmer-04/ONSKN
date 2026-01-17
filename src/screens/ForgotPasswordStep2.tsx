@@ -18,6 +18,9 @@ function ForgotPasswordStep2({navigation} : any) {
 
   const onSubmitOTP = (data) => {
       setLoaderVisibility(true)
+
+      console.log("onsubmitOTP data ===> ", data);
+      
   
       dispatch(VerifyOtpAction(data))
       .unwrap()
@@ -28,6 +31,8 @@ function ForgotPasswordStep2({navigation} : any) {
             type: 'success',
             text1: 'Verified!'
           })
+
+        navigation.navigate('ForgotPasswordStep3')
       })
       .catch((err) => {
         console.log('OTP check fail ==> ', err);
@@ -39,7 +44,6 @@ function ForgotPasswordStep2({navigation} : any) {
         })
       })
       .finally(() => {
-        navigation.navigate('ForgotPasswordStep3')
         setLoaderVisibility(false)
       })
   }
@@ -69,7 +73,7 @@ function ForgotPasswordStep2({navigation} : any) {
             code: '',
           }}
           validationSchema={Schema.forgotPasswordStep2Schema}
-          onSubmit={(data) => {onSubmitOTP(data)}}
+          onSubmit={(data) => onSubmitOTP(data)}
         >
           {({ handleChange, errors, values, handleSubmit }) => (
             <>

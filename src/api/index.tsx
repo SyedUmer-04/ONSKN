@@ -101,6 +101,9 @@ export const forgotPassword = data => {
 };
 
 export const verifyOtp = data => {
+  console.log('VerifyOTP api data ====> ', data);
+  
+
   return instance.post(endpoints.auth.verifyOTP, data);
 };
 

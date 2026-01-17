@@ -30,6 +30,8 @@ function ForgotPasswordStep1({navigation} : any) {
           type: 'success',
           text1: 'Email Sent!'
         })
+
+      navigation.navigate('ForgotPasswordStep2')
     })
     .catch((err) => {
       console.log('Forgot Pass fail ==> ', err);
@@ -42,7 +44,6 @@ function ForgotPasswordStep1({navigation} : any) {
       })
     })
     .finally(() => {
-      navigation.navigate('ForgotPasswordStep2')
       setLoaderVisibility(false)
     })
 
