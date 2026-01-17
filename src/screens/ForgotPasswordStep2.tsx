@@ -9,7 +9,7 @@ import CustomButton from '../components/CustomButton';
 import { Schema } from '../components/schema';
 import { useState } from 'react';
 import { showToast } from '../utils/toast';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { VerifyOtpAction } from '../redux/slicers/authSlice';
 
 function ForgotPasswordStep2({navigation} : any) {
@@ -18,11 +18,10 @@ function ForgotPasswordStep2({navigation} : any) {
 
   const onSubmitOTP = (data) => {
       setLoaderVisibility(true)
-
-      console.log("onsubmitOTP data ===> ", data);
+      const otpEmail = useSelector(state => state?.auth?.verifyOTPEmail)
       
   
-      dispatch(VerifyOtpAction(data))
+      dispatch(VerifyOtpAction({email: otpEmail, ...data}))
       .unwrap()
       .then((res) => {
         console.log('OTP check successs ==> ', res);

@@ -30,6 +30,7 @@ function ForgotPasswordStep1({navigation} : any) {
           type: 'success',
           text1: 'Email Sent!'
         })
+      
 
       navigation.navigate('ForgotPasswordStep2')
     })

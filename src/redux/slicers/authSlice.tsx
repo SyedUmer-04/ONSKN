@@ -45,6 +45,8 @@ const authSlice = createSlice({
   },
   user: null,
   token: null,
+  verifyOTPEmail: null,
+
 
 },
   reducers: {
@@ -59,10 +61,13 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(LoginAction.fulfilled, (state, action) => {
-        console.log("login Extra Reducer res ====> ", action.payload);
         state.user = action?.payload?.user
         state.token = action?.payload?.token
         
+      })
+    builder
+      .addCase(ForgotPasswordAction.fulfilled, (state, action) => {
+        state.verifyOTPEmail = action?.payload?.email
       })
 
   }

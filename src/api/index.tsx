@@ -96,14 +96,12 @@ export const signup = data => {
 };
 
 export const forgotPassword = data => {
-  
   return instance.post(endpoints.auth.forgotPasswordMail, data);
 };
 
 export const verifyOtp = data => {
-  console.log('VerifyOTP api data ====> ', data);
+  console.log('verify OTP data ======> ', data);
   
-
   return instance.post(endpoints.auth.verifyOTP, data);
 };
 
