@@ -17,7 +17,12 @@ export const Schema = {
     }),
 
     forgotPasswordStep2Schema : yup.object({
-        code: yup.string().required('Password is required').min(6, 'Password must be more than 6 characters'),
+        otp: yup.string().required('Password is required').min(6, 'Password must be more than 6 characters'),
+    }),
+
+    forgotPasswordStep3Schema : yup.object({
+        password: yup.string().required('Password is required').min(6, 'Password must be more than 6 characters'),
+        confirmPassword: yup.string().oneOf([yup.ref('password')], 'Password must be same').required('Password is required')
     }),
 
 }

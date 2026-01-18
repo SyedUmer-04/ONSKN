@@ -6,8 +6,8 @@ import React, { use, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 function Start({navigation}: any) {
-    const token = useSelector(state => state.auth.token);
-    const user = useSelector(state => state.auth.user);
+    const token = useSelector(state => state?.auth?.token);
+    const user = useSelector(state => state?.auth?.user);
 
   useEffect(() => {
 

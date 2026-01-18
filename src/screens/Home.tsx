@@ -27,9 +27,9 @@ function Home({ navigation }: any) {
         <View style={styles.body}>
           <View style={styles.greetAndIcons}>
             <View>
-              <Text style={styles.greet}>welcome</Text>
+              <Text style={styles.greet}>Welcome!</Text>
               <TouchableOpacity>
-                <Text style={styles.createAccount}>Create Account</Text>
+                <Text style={styles.createAccount}>'USER'</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.iconContainer}>
@@ -158,8 +158,8 @@ const styles = StyleSheet.create({
   },
 
   navicon: {
-    width: vw * 7,
-    height: vh * 4,
+    width: vw * 6,
+    height: vh * 3.5,
     resizeMode: 'contain',
     marginRight: vw * 20,
   },

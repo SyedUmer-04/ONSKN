@@ -32,7 +32,7 @@ function ForgotPasswordStep1({navigation} : any) {
         })
       
 
-      navigation.navigate('ForgotPasswordStep2')
+      navigation.navigate('ForgotPasswordStep2', {...data})
     })
     .catch((err) => {
       console.log('Forgot Pass fail ==> ', err);

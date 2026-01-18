@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { forgotPassword, login, signup, verifyOtp } from '../../api';
+import { forgotPassword, login, resetPassword, signup, verifyOtp } from '../../api';
 
 const initialState = {
   user: [],
@@ -31,8 +31,12 @@ export const ForgotPasswordAction = createAsyncThunk('ForgotPassword', async dat
   return await forgotPassword(data);
 });
 
-export const VerifyOtpAction = createAsyncThunk('Verifytp', async data => {
+export const VerifyOtpAction = createAsyncThunk('VerifyOtp', async data => {
   return await verifyOtp(data);
+});
+
+export const resetPasswordAction = createAsyncThunk('VerifyOtp', async data => {
+  return await resetPassword(data);
 });
 
 const authSlice = createSlice({
@@ -45,7 +49,6 @@ const authSlice = createSlice({
   },
   user: null,
   token: null,
-  verifyOTPEmail: null,
 
 
 },
@@ -65,11 +68,6 @@ const authSlice = createSlice({
         state.token = action?.payload?.token
         
       })
-    builder
-      .addCase(ForgotPasswordAction.fulfilled, (state, action) => {
-        state.verifyOTPEmail = action?.payload?.email
-      })
-
   }
 });
 

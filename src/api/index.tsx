@@ -100,14 +100,12 @@ export const forgotPassword = data => {
 };
 
 export const verifyOtp = data => {
-  console.log('verify OTP data ======> ', data);
-  
   return instance.post(endpoints.auth.verifyOTP, data);
 };
 
-// export const resetPassword = data => {
-//   return instance.post(endpoints.auth.resetPassword, data);
-// };
+export const resetPassword = data => {
+  return instance.post(endpoints.auth.resetPassword, data);
+};
 
 // export const getProfile = data => {
 //   return instance.get(endpoints.user.profile);

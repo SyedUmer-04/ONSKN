@@ -9,19 +9,19 @@ import CustomButton from '../components/CustomButton';
 import { Schema } from '../components/schema';
 import { useState } from 'react';
 import { showToast } from '../utils/toast';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { VerifyOtpAction } from '../redux/slicers/authSlice';
 
-function ForgotPasswordStep2({navigation} : any) {
+function ForgotPasswordStep2({navigation, route} : any) {
   const [loader, setLoaderVisibility] = useState(false)
+  const { email } = route?.params 
+  
   const dispatch = useDispatch()
 
   const onSubmitOTP = (data) => {
-      setLoaderVisibility(true)
-      const otpEmail = useSelector(state => state?.auth?.verifyOTPEmail)
-      
+      setLoaderVisibility(true)      
   
-      dispatch(VerifyOtpAction({email: otpEmail, ...data}))
+      dispatch(VerifyOtpAction({email , ...data}))
       .unwrap()
       .then((res) => {
         console.log('OTP check successs ==> ', res);
@@ -31,7 +31,7 @@ function ForgotPasswordStep2({navigation} : any) {
             text1: 'Verified!'
           })
 
-        navigation.navigate('ForgotPasswordStep3')
+        navigation.navigate('ForgotPasswordStep3', {email, ...data})
       })
       .catch((err) => {
         console.log('OTP check fail ==> ', err);
@@ -69,7 +69,7 @@ function ForgotPasswordStep2({navigation} : any) {
 
         <Formik
           initialValues={{
-            code: '',
+            otp: '',
           }}
           validationSchema={Schema.forgotPasswordStep2Schema}
           onSubmit={(data) => onSubmitOTP(data)}
@@ -78,19 +78,19 @@ function ForgotPasswordStep2({navigation} : any) {
             <>
               <CustomTextInput
                 leftImageSource={asset.profileIcon}
-                placeholder={'Enter the code'}
+                placeholder={'Enter the otp'}
                 placeholderColor={colors.text}
-                key={'code'}
+                key={'otp'}
                 isrequired={true}
-                error={errors.code}
-                onChangeText={handleChange('code')}
-                value={values.code}
+                error={errors.otp}
+                onChangeText={handleChange('otp')}
+                value={values.otp}
               />
-              ({errors.code} &&
+              ({errors.otp} &&
               <CustomText
                 textStyles={{ color: colors.red, alignSelf: 'flex-start' }}
               >
-                {errors.code}
+                {errors.otp}
               </CustomText>
               )
               

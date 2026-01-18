@@ -7,15 +7,58 @@ import CustomText from '../components/CustomText';
 import CustomTextInput from '../components/CustomTextInput';
 import CustomButton from '../components/CustomButton';
 import { Schema } from '../components/schema';
+import { useDispatch } from 'react-redux';
+import { resetPasswordAction } from '../redux/slicers/authSlice';
+import { showToast } from '../utils/toast';
+import { useState } from 'react';
 
-function ForgotPasswordStep3({navigation} : any) {
+function ForgotPasswordStep3({navigation, route} : any) {
+
+  const {email, otp} = route.params
+  const dispatch = useDispatch()
+  const [loader, setLoaderVisibility] = useState(false)
+
+  const onPasswordChange = (data) => {
+    setLoaderVisibility(true)
+    const { password } = data
+
+
+    dispatch(resetPasswordAction({email, otp, password}))
+    .unwrap()
+    .then((res) => {
+      console.log("reset pass success =====> ", res);
+
+      showToast({
+        type: 'success',
+        text1: 'Password changed successfully!',
+        text2: 'Login now!'
+      })
+
+      navigation.navigate('SignIn')
+      
+    })
+    .catch((err) => {
+      console.log("reset pass error =====> ", err);
+
+      showToast({
+        type: 'error',
+        text1: 'Error',
+        text2: err?.message
+      })
+    })
+    .finally(
+      setLoaderVisibility(false)
+    )
+  }
+
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Image style={styles.bgImage} source={asset.LoginBg} />
       <Image style={styles.logoIcon} source={asset.logoIcon} />
 
       <View style={styles.formContainer}>
-        <CustomText textStyles={[styles.toggleText, styles.textUnderline]}>Step 2/3</CustomText>
+        <CustomText textStyles={[styles.toggleText, styles.textUnderline]}>Step 3/3</CustomText>
 
         <View style={styles.headingContainer}>
           <TouchableOpacity>
@@ -26,51 +69,52 @@ function ForgotPasswordStep3({navigation} : any) {
 
 
         <CustomText textStyles={styles.tagLine}>
-          Please check your email for verification code. your code is 6 digital in length
+          Create a password
         </CustomText>
 
         <Formik
           initialValues={{
-            code: '',
+            password: '',
+            confirmPassword: '',
           }}
-          validationSchema={Schema.forgotPasswordStep2Schema}
-          onSubmit={() => {}}
+          validationSchema={Schema.forgotPasswordStep3Schema}
+          onSubmit={(data) => {onPasswordChange(data)}}
         >
           {({ handleChange, errors, values, handleSubmit }) => (
             <>
               <CustomTextInput
                 leftImageSource={asset.profileIcon}
-                placeholder={'Enter the code'}
+                placeholder={'Enter the password'}
                 placeholderColor={colors.text}
-                key={'code'}
+                key={'password'}
                 isrequired={true}
-                error={errors.code}
-                onChangeText={handleChange('email')}
-                value={values.code}
+                error={errors.password}
+                onChangeText={handleChange('password')}
+                value={values.password}
               />
-              ({errors.code} &&
+              ({errors.password} &&
               <CustomText
                 textStyles={{ color: colors.red, alignSelf: 'flex-start' }}
               >
-                {errors.code}
+                {errors.password}
               </CustomText>
               )
               
               <CustomTextInput
                 leftImageSource={asset.profileIcon}
-                placeholder={'Enter the code'}
+                placeholder={'Confirm password'}
                 placeholderColor={colors.text}
-                key={'code'}
+                key={'confirmPassword'}
                 isrequired={true}
-                error={errors.code}
-                onChangeText={handleChange('email')}
-                value={values.code}
+                error={errors.confirmPassword}
+                onChangeText={handleChange('confirmPassword')}
+                value={values.confirmPassword}
               />
-              ({errors.code} &&
+              ({errors.confirmPassword} &&
               <CustomText
                 textStyles={{ color: colors.red, alignSelf: 'flex-start' }}
               >
-                {errors.code}
+                {errors.confirmPassword}
               </CustomText>
               )
               
@@ -86,6 +130,7 @@ function ForgotPasswordStep3({navigation} : any) {
                   fontWeight: '900',
                   fontSize: vh * 2.5,
                 }}
+                loader = {loader}
                 onPress={handleSubmit}
               />
             </>

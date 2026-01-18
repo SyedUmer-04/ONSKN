@@ -6,12 +6,12 @@ export const endpoints = {
     userProfile: 'wp/v2/users/me',
 
     forgotPasswordMail: 'auth/forgot',
-    verifyOTP: '/verify-otp',
-    resetPassword: 'bdpwr/v1/set-password',
-    verifyPassword: 'bdpwr/v1/validate-code',
-    termsConditions: 'wp/v2/pages?slug=terms',
-    privacyPolicy: 'wp/v2/pages?slug=privacy',
-    registration: 'registration',  
+    verifyOTP: 'auth/verify-otp',
+    resetPassword: 'auth/reset-password',
+    // verifyPassword: 'bdpwr/v1/validate-code',
+    // termsConditions: 'wp/v2/pages?slug=terms',
+    // privacyPolicy: 'wp/v2/pages?slug=privacy',
+    // registration: 'registration',  
   },
 
   products: {
