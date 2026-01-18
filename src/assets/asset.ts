@@ -23,4 +23,5 @@ export const asset = {
     loginAlert : require('./icons/AlertBox/LoginAlertQuestionMark.png'),
     close : require('./icons/AlertBox/closeOrCross.png'),
     sliderImage1 : require('./icons/Home/SliderImage1.png'),
+    backIcon: require('./icons/back.png'),
 }

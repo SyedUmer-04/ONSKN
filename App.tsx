@@ -24,6 +24,7 @@ import { PermissionsAndroid } from 'react-native';
 import { Provider } from 'react-redux';
 import { store } from './src/redux/store';
 import Toast from 'react-native-toast-message';
+import Filter from './src/screens/filter';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -63,6 +64,10 @@ function App() {
             <Stack.Screen
               name="ForgotPasswordStep3"
               component={ForgotPasswordStep3}
+            />
+            <Stack.Screen
+              name="Filter"
+              component={Filter}
             />
             <Stack.Screen name="Verification" component={Verification} />
             <Stack.Screen name="NewPassword" component={NewPassword} />

@@ -14,6 +14,7 @@ import { colors } from '../utils/theme';
 import SwiperFlatList from 'react-native-swiper-flatlist';
 import AlertModal from '../components/AlertModal';
 import CustomText from '../components/CustomText';
+import { ScrollView } from 'react-native-gesture-handler';
 
 function Home({ navigation }: any) {
   return (
@@ -39,7 +40,7 @@ function Home({ navigation }: any) {
               <TouchableOpacity>
                 <Image source={asset.homeBag} style={styles.icons} />
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('Filter')}>
                 <Image source={asset.homefilter} style={styles.icons} />
               </TouchableOpacity>
             </View>
@@ -53,7 +54,7 @@ function Home({ navigation }: any) {
               paginationStyleItem={{
                 width: vw * 2.5,
                 height: vw * 2.5,
-                borderRadius: vw * 1.5,
+
               }}
               paginationStyle={{ bottom: -vh * 5 }}
               data={[
@@ -64,10 +65,11 @@ function Home({ navigation }: any) {
               renderItem={({ item }) => (
                 <View
                   style={{
-                    width: vw * 88,
+                    width: vw * 90,
                     height: vh * 25,
                     justifyContent: 'center',
-                    alignItems: 'center',
+                    alignSelf: 'center',
+
                   }}
                 >
                   <ImageBackground
@@ -79,7 +81,7 @@ function Home({ navigation }: any) {
             />
           </View>
 
-          <View>
+          <View style={styles.categoryContainer}>
             <CustomText textStyles={styles.headings}>Categories</CustomText>
 
             <FlatList
@@ -94,8 +96,9 @@ function Home({ navigation }: any) {
                 <Image
                   source={item}
                   style={{
-                    width: vw * 30,
-                    height: vh * 15,
+                    width: vw * 32,
+                    height: vh * 9.5,
+                    borderRadius: vw * 2,
                     marginRight: vw * 4,
                     resizeMode: 'contain',
                   }}
@@ -103,8 +106,8 @@ function Home({ navigation }: any) {
               )}
             />
           </View>
-          
-          <View>
+
+          <View style={styles.ourProductsContainer}>
             <CustomText textStyles={styles.headings}>Our Products</CustomText>
 
             <FlatList
@@ -116,15 +119,36 @@ function Home({ navigation }: any) {
                 asset.sliderImage1,
               ]}
               renderItem={({ item }) => (
-                <Image
-                  source={item}
-                  style={{
-                    width: vw * 30,
-                    height: vh * 15,
-                    marginRight: vw * 4,
-                    resizeMode: 'contain',
-                  }}
-                />
+                <View style = {{flexDirection: 'column'}}>
+                  <View style={{ flexDirection: 'column' }}>
+                    <Image
+                      source={item}
+                      style={{
+                        width: vw * 40,
+                        height: vh * 11.75,
+                        borderRadius: vw * 2,
+                        marginRight: vw * 4,
+                        resizeMode: 'contain',
+                      }}
+                    />
+                    <Text >Sweeter</Text>
+                    <Text >$25</Text>
+                  </View>
+                  <View style={{ flexDirection: 'column' }}>
+                    <Image
+                      source={item}
+                      style={{
+                        width: vw * 40,
+                        height: vh * 11.75,
+                        borderRadius: vw * 2,
+                        marginRight: vw * 4,
+                        resizeMode: 'contain',
+                      }}
+                    />
+                    <Text >Sweeter</Text>
+                    <Text >$25</Text>
+                  </View>
+                </View>
               )}
             />
           </View>
@@ -167,7 +191,7 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
     backgroundColor: colors.Bg,
-    paddingHorizontal: vw * 6,
+    // paddingLeft: vw * 6,
   },
 
   greetAndIcons: {
@@ -175,6 +199,7 @@ const styles = StyleSheet.create({
     paddingVertical: vh * 2,
     justifyContent: 'space-between',
     alignItems: 'flex-end',
+    marginHorizontal: vw * 5,
   },
 
   greet: {
@@ -202,13 +227,23 @@ const styles = StyleSheet.create({
   sliderContainer: {
     height: vh * 25,
     marginBottom: vh * 4,
+    marginHorizontal: vw * 5,
+
+  },
+
+  ourProductsContainer: {
+    marginLeft: vw * 5,
+  },
+
+  categoryContainer: {
+    marginLeft: vw * 5,
   },
 
   headings: {
     fontSize: vw * 6,
     fontWeight: '800',
     color: colors.text,
-    marginTop: vh * 2,
+    marginVertical: vh * 2,
   },
 });
 
