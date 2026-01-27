@@ -5,50 +5,72 @@ import {
     ImageBackground,
     ScrollView,
     TouchableOpacity,
-  } from 'react-native';
-  import { asset } from '../assets/asset';
-  import { vh, vw } from '../utils/measurements';
-  import { colors } from '../utils/theme';
-  import { useEffect, useRef, useState } from 'react';
-  import { Text } from 'react-native-gesture-handler';
-  
-  
+} from 'react-native';
+import { asset } from '../assets/asset';
+import { vh, vw } from '../utils/measurements';
+import { colors } from '../utils/theme';
+import { useEffect, useRef, useState } from 'react';
+import { Text } from 'react-native-gesture-handler';
+import { addListener } from '@reduxjs/toolkit';
+
+
 function ProductDetails({ navigation }: any) {
-  
+    const [counter, setCounter] = useState(0);
+    const [toggleItem, setToggleItem] = useState('')
+
     return (
-      <View style={styles.container}>
-        <Image style={styles.bgImage} source={asset.productImage} />
-        <View style={styles.topBarView } >
-            <Image source = {asset.backIcon} style={styles.topBarIcons}/>
-            <View>
-                <Text style={styles.heading} >Product Details</Text>
-                <Image source={asset.heartIcon} style={styles.topBarIcons} />
+        <View style={styles.container}>
+            <Image style={styles.bgImage} source={asset.productImage} />
+            <View style={styles.topIconTextContainer} >
+                <Image source={asset.whiteBackIcon} style={styles.topBarIcons} />
+                <View style={styles.topHeadingView}>
+                    <Text style={styles.topheadingText} >Product Details</Text>
+                    <TouchableOpacity><Image source={asset.whiteHeartIcon} style={styles.topBarIcons} /></TouchableOpacity>
+                </View>
             </View>
+
+            <View style={styles.body}>
+                <Text style={styles.mainHeading}>Bundles</Text>
+
+                <View style={styles.priceAndCountContainer}>
+                    <Text style={styles.price}>$45</Text>
+                    <View style={styles.counterContainer}>
+                        <TouchableOpacity style={styles.cartCounterButtons} onPress={() => setCounter(counter - 1)}><Text style={styles.counterButtonText} >-</Text></TouchableOpacity>
+                        <View style={styles.cartCounterButtons}><Text style={styles.counterButtonText}>{counter}</Text></View>
+                        <TouchableOpacity style={styles.cartCounterButtons} onPress={() => setCounter(counter + 1)}><Text style={styles.counterButtonText} >+</Text></TouchableOpacity>
+                    </View>
+                </View>
+
+                <View style={styles.toggleButtonContainer} >
+                    { toggleItem == "Details" ?
+                    <>
+                        <TouchableOpacity style={[styles.toggleButtons,  {backgroundColor: colors.lightGrey}]} onPress={() => setToggleItem('Details')} ><Text style={styles.toggleButtonsText} >Details</Text></TouchableOpacity>
+                        <TouchableOpacity style={styles.toggleButtons} onPress={() => setToggleItem('Review')} ><Text style={styles.toggleButtonsText} >Review</Text></TouchableOpacity>
+                    </> : <>
+                        <TouchableOpacity style={styles.toggleButtons} onPress={() => setToggleItem('Details')} ><Text style={styles.toggleButtonsText} >Details</Text></TouchableOpacity>
+                        <TouchableOpacity style={[styles.toggleButtons,  {backgroundColor: colors.lightGrey}]} onPress={() => setToggleItem('Review')} ><Text style={styles.toggleButtonsText} >Review</Text></TouchableOpacity>
+                    </>
+                    }
+                </View>
+
+                { toggleItem == 'Details' ?
+                    <View style={styles.detailsReviewContainer}>
+                        <Text style={styles.itemDetailsText}>
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+                        </Text>
+                    </View>
+                    :
+                    <View>
+
+                    </View>
+
+                }
+            </View>
+
+                <TouchableOpacity style={styles.addToCartButton}>
+                    <Text style={styles.addToCartText}>Add To Cart</Text>
+                </TouchableOpacity>
         </View>
-  
-        <View style={styles.formContainer}>
-          <View style={styles.ToggleView}>
-            <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
-              <Text style={[styles.toggleText, styles.textUnderline]}>
-                Sign In
-              </Text>
-            </TouchableOpacity>
-  
-            <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-              <Text style={styles.toggleText}>Sign Up</Text>
-            </TouchableOpacity>
-          </View>
-  
-          <Text style={styles.greetings}>Welcome Back</Text>
-  
-          <Text style={styles.tagLine}>
-            Welcome! Unlock Your Personalized Experience.
-          </Text>
-        
-        </View>
-           
-        {/* </ScrollView> */}
-      </View>
     );
 }
 
@@ -56,80 +78,136 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
 
-
     },
 
-    topBarView: {
+    topIconTextContainer: {
         position: 'absolute',
-        top: vh * 5,
+        top: vh * 3,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        paddingHorizontal: vw * 7
 
     },
 
-    heading : {
-
+    topHeadingView: {
+        flex: 1,
+        marginLeft: vw * 5,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
 
-    topBarIcons:{
-        height: vh * 6,
-        width: vw * 8
+    topheadingText: {
+        fontSize: vw * 5,
+        color: colors.white,
+        fontWeight: 500,
+    },
+
+    topBarIcons: {
+        height: vh * 3,
+        width: vw * 5,
+        resizeMode: 'contain'
     },
 
     bgImage: {
-        height: vh * 35,
+        height: vh * 30,
         width: vw * 100,
-        resizeMode: 'cover',
-        opacity: 1.5,
+        resizeMode: 'stretch',
     },
 
-
-    logoIcon: {
-        width: vw * 55,
-        height: vh * 15,
-        resizeMode: 'contain',
-        position: 'absolute',
-        zIndex: 1000,
-        alignSelf: 'center',
-    },
-
-    formContainer: {
+    body: {
         flex: 1,
         backgroundColor: colors.Bg,
-        width: vw * 100,
-        paddingHorizontal: vw * 5,
-        paddingTop: vh * 6,
-    },
+        paddingVertical: vh * 3,
+        paddingHorizontal: vw * 7,
 
-    ToggleView: {
-        flexDirection: 'row',
-        paddingVertical: vh * 2,
     },
-
-    toggleText: {
-        color: colors.text,
-        fontSize: vw * 4,
-        marginRight: vw * 5,
-        fontWeight: 700,
-    },
-
-    textUnderline: {
-        borderBottomWidth: vw / 3,
-        borderBottomColor: colors.Primary,
-        paddingBottom: vh / 2,
-    },
-
-    greetings: {
+    
+    mainHeading: {
         fontSize: vw * 8,
-        fontWeight: 800,
+        fontWeight: 600,
         color: colors.text,
     },
 
-    tagLine: {
-        fontSize: vw * 3.5,
-        color: colors.text,
+    priceAndCountContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginVertical: vh,
     },
+
+    price: {
+        fontSize: vw * 5,
+        fontWeight: 500,
+        color: colors.black,
+    },
+
+    counterContainer: {
+        flexDirection: 'row',
+    },
+
+    cartCounterButtons: {
+        height: vh * 3.5,
+        width: vh * 3.5,
+        backgroundColor: colors.lightGrey,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    counterButtonText: {
+        fontSize: vw * 5,
+        fontWeight: 300, 
+    },
+
+    toggleButtonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: vh * 3
+    },
+
+    toggleButtons: {
+        height: vh * 4,
+        width: vw * 25,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginVertical: vh * 2,
+
+    },
+
+    toggleButtonsText: {
+        fontSize: vw * 3.5,
+        fontWeight: 500,
+
+    },
+
+    detailsReviewContainer: {
+        flex: 1, 
+        // backgroundColor: 'red'
+    },
+
+    itemDetailsText: {
+        fontSize: vw * 4,
+        color: colors.grey,
+        marginTop: vh,
+        lineHeight: vh * 2.5,
+    },
+
+    addToCartButton: {
+        height: vh * 7,
+        width: vw * 100,
+        backgroundColor: colors.Primary,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
+    addToCartText: {
+        fontSize: vw * 4,
+        fontWeight: 600, 
+        color: colors.white
+    }
+
+
 });
 
 export default ProductDetails;

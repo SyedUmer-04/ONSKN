@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
 
     filterButton: {
         flexDirection: 'row',  
-        alignSelf: 'baseline',
+        // alignSelf: 'baseline',
     },
 
     filterIcon: {

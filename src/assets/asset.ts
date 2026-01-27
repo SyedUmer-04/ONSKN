@@ -28,4 +28,6 @@ export const asset = {
     heartIcon: require('./icons/heartIcon.png'),
     bagIcon: require('./icons/bagIcon.png'),
     productImage: require('./icons/productImageInProductDetails.png'),
+    whiteHeartIcon: require('./icons/heartIconWhite.png'),
+    whiteBackIcon: require('./icons/icon-back-white.png'),
 }
