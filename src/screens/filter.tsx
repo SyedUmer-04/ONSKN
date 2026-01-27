@@ -22,7 +22,17 @@ const Filter = ({navigation} : any) => {
 
             <View style = {styles.priceRangeContainer}>
                 <Text style = {styles.subHeading}> Price</Text>
-                //Categories Here
+                Price Range Here 
+            </View>
+
+            <View style = {styles.filterButtons}>
+                <TouchableOpacity style = {styles.clearButton}>
+                    <Text style = {styles.clearButtonText}>Clear</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style = {styles.applyButton}>
+                    <Text style = {styles.applyButtonText}>Apply</Text>
+                </TouchableOpacity>
             </View>
 
         </View>
@@ -70,6 +80,43 @@ const styles = StyleSheet.create({
         fontSize: vw * 5,
         color: colors.text,
         fontWeight: 500,
+    },
+    
+    filterButtons:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-evenly'
+    },
+
+    clearButton:{
+        height: vh * 5.5,
+        width: vw * 35,
+        backgroundColor: colors.white,
+        borderWidth: vw * .3,
+        borderColor: colors.button,
+        borderRadius: vw,
+        fontWeight: 800,
+        alignItems: 'center',
+        justifyContent: 'space-evenly'
+    },
+
+    applyButton:{
+        height: vh * 5.5,
+        width: vw * 35,
+        color: colors.white,
+        backgroundColor: colors.button,
+        alignItems: 'center',
+        justifyContent: 'space-evenly'
+    },
+
+    applyButtonText: {
+        fontWeight: 800,
+        color: colors.white
+    },
+
+    clearButtonText: {
+        fontWeight: 800,
+        color: colors.button
     }
 })
 

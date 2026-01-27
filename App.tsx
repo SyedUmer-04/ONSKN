@@ -14,8 +14,6 @@ import SignUp from './src/screens/SignUp';
 import ForgotPasswordStep1 from './src/screens/ForgotPasswordStep1';
 import ForgotPasswordStep2 from './src/screens/ForgotPasswordStep2';
 import ForgotPasswordStep3 from './src/screens/ForgotPasswordStep3';
-import Verification from './src/screens/Verification';
-import NewPassword from './src/screens/NewPassword';
 import GetStarted from './src/screens/GetStarted';
 import Home from './src/screens/Home';
 import { requestUserPermission } from './src/utils/notificationService';
@@ -25,6 +23,8 @@ import { Provider } from 'react-redux';
 import { store } from './src/redux/store';
 import Toast from 'react-native-toast-message';
 import Filter from './src/screens/filter';
+import Search from './src/screens/search';
+import ProductDetails from './src/screens/ProductDetail';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -45,7 +45,7 @@ function App() {
           <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
           <Stack.Navigator
-            initialRouteName={'Start'}
+            initialRouteName={'ProductDetails'}
             screenOptions={{ headerShown: false }}
           >
             <Stack.Screen name="Start" component={Start} />
@@ -65,14 +65,11 @@ function App() {
               name="ForgotPasswordStep3"
               component={ForgotPasswordStep3}
             />
-            <Stack.Screen
-              name="Filter"
-              component={Filter}
-            />
-            <Stack.Screen name="Verification" component={Verification} />
-            <Stack.Screen name="NewPassword" component={NewPassword} />
+            <Stack.Screen name="Filter" component={Filter} />
+            <Stack.Screen name="Search" component={Search} />
+            <Stack.Screen name="ProductDetails" component={ProductDetails} />
           </Stack.Navigator>
-          <Toast  position='top' />
+          <Toast position='top' />
         </View>
       </NavigationContainer>
     </Provider>

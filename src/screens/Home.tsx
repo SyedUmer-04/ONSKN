@@ -34,7 +34,7 @@ function Home({ navigation }: any) {
               </TouchableOpacity>
             </View>
             <View style={styles.iconContainer}>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('Search')}>
                 <Image source={asset.homeSearch} style={styles.icons} />
               </TouchableOpacity>
               <TouchableOpacity>
@@ -74,7 +74,7 @@ function Home({ navigation }: any) {
                 >
                   <ImageBackground
                     source={item}
-                    style={{ width: '100%', height: '100%' }}
+                    style={{ width: '100%', height: '100%' }} 
                   />
                 </View>
               )}

@@ -26,7 +26,8 @@ interface textInputI {
 }
 
 const CustomTextInput = props => {
-  const [isHidden, setIsHidden] = useState(() => !!rightImageSource)
+  const [isHidden, setIsHidden] = useState(() => !!rightImageSource) 
+
   const {
     leftImageSource,
     rightImageSource,
@@ -35,6 +36,7 @@ const CustomTextInput = props => {
     placeholderColor = colors.LoginText,
     isrequired,
     inputStyle,
+    rightImageFunction
   } = props;
   return (
       <View style={styles.inputContainer}>
@@ -50,9 +52,14 @@ const CustomTextInput = props => {
           {...props}
         />
         {rightImageSource && (
-          <TouchableOpacity onPress={() => setIsHidden(!isHidden)}>
-            <Image style={styles.image} source={rightImageSource} />
-          </TouchableOpacity>
+          rightImageFunction ?
+            <TouchableOpacity onPress={() => setIsHidden(!isHidden)}>
+              <Image style={styles.image} source={rightImageSource} />
+            </TouchableOpacity> 
+          : 
+            <TouchableOpacity onPress={() => setIsHidden(!isHidden)}>
+              <Image style={styles.image} source={rightImageSource} />
+            </TouchableOpacity>
         )}
       </View>
   );

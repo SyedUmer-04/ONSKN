@@ -24,4 +24,8 @@ export const asset = {
     close : require('./icons/AlertBox/closeOrCross.png'),
     sliderImage1 : require('./icons/Home/SliderImage1.png'),
     backIcon: require('./icons/back.png'),
+    searchExampleImage: require('./icons/renderItemExamplePic.png'),
+    heartIcon: require('./icons/heartIcon.png'),
+    bagIcon: require('./icons/bagIcon.png'),
+    productImage: require('./icons/productImageInProductDetails.png'),
 }
